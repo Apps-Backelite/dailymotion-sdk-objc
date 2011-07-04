@@ -316,7 +316,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iOS_Prefix.pch;
 				INSTALL_PATH = "“$(BUILT_PRODUCTS_DIR)”";
-				PRODUCT_NAME = dailymotion_sdk_objc;
+				PRODUCT_NAME = Dailymotion;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "“$(TARGET_NAME)”";
 			};
