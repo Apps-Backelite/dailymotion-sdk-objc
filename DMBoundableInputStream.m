@@ -47,7 +47,7 @@
 - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)maxLength
 {
     NSUInteger sentLength = 0, readLength = 0;
-
+    
     if (![self hasBytesAvailable])
     {
         return 0;
@@ -76,7 +76,7 @@
         sentLength += readLength;
         deliveredLength += readLength;
     }
-
+    
     return sentLength;
 }
 

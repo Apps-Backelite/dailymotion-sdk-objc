@@ -261,6 +261,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				53E273C91265C23E00B541BE /* DailymotionTest.m in Sources */,
+				53E270FE126369C100B541BE /* Dailymotion.m in Sources */,
+				531F0EF2126880830089FAE5 /* DMBoundableInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -252,6 +252,7 @@
     username = kDMUsername;
     password = kDMPassword;
     [api setGrantType:DailymotionGrantTypePassword withAPIKey:kDMAPIKey secret:kDMAPISecret scope:@"read write delete"];
+    // [api setGrantType:DailymotionGrantTypeClientCredentials withAPIKey:kDMAPIKey secret:kDMAPISecret scope:@"read write delete"];
     [api clearSession];
     [api uploadFile:kDMTestFilePath delegate:self];
 
