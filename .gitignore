@@ -17,3 +17,6 @@ profile
 *~.nib/
 
 DailymotionTestConfig.h
+
+.svn
+**/.svn
