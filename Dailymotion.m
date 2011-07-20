@@ -843,12 +843,12 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
 {
     if (connection == apiConnection)
     {
-        apiResponse = [response retain];
+        apiResponse = [(NSHTTPURLResponse *)response retain];
         apiResponseData = [[NSMutableData alloc] init];
     }
     else if (connection == uploadConnection)
     {
-        uploadResponse = [response retain];
+        uploadResponse = [(NSHTTPURLResponse *)response retain];
         uploadResponseData = [[NSMutableData alloc] init];
     }
 }
