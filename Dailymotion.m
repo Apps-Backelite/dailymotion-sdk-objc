@@ -33,7 +33,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
 @end
 
 @implementation Dailymotion
-@synthesize timeout, autoSaveSession, UIDelegate;
+@synthesize timeout, autoSaveSession, UIDelegate, grantType;
 @dynamic version, session;
 
 #pragma mark Dailymotion (private)
