@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		531F0EF1126880830089FAE5 /* DMBoundableInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 531F0EEF126880830089FAE5 /* DMBoundableInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		531138781430D68400ED3153 /* DailymotionPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 531138761430D68400ED3153 /* DailymotionPlayerViewController.h */; };
+		531138791430D68400ED3153 /* DailymotionPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 531138771430D68400ED3153 /* DailymotionPlayerViewController.m */; };
 		531F0EF2126880830089FAE5 /* DMBoundableInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 531F0EF0126880830089FAE5 /* DMBoundableInputStream.m */; };
 		53E270FD126369C100B541BE /* Dailymotion.h in Headers */ = {isa = PBXBuildFile; fileRef = 53E270FB126369C100B541BE /* Dailymotion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		53E270FE126369C100B541BE /* Dailymotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E270FC126369C100B541BE /* Dailymotion.m */; settings = {ATTRIBUTES = (); }; };
@@ -33,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		531138761430D68400ED3153 /* DailymotionPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DailymotionPlayerViewController.h; sourceTree = "<group>"; };
+		531138771430D68400ED3153 /* DailymotionPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DailymotionPlayerViewController.m; sourceTree = "<group>"; };
 		531F0EEF126880830089FAE5 /* DMBoundableInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMBoundableInputStream.h; sourceTree = "<group>"; };
 		531F0EF0126880830089FAE5 /* DMBoundableInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMBoundableInputStream.m; sourceTree = "<group>"; };
 		533B5E5E1267483D00D3A924 /* DailymotionTestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DailymotionTestConfig.h; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 			children = (
 				53E270FB126369C100B541BE /* Dailymotion.h */,
 				53E270FC126369C100B541BE /* Dailymotion.m */,
+				531138761430D68400ED3153 /* DailymotionPlayerViewController.h */,
+				531138771430D68400ED3153 /* DailymotionPlayerViewController.m */,
 				531F0EEF126880830089FAE5 /* DMBoundableInputStream.h */,
 				531F0EF0126880830089FAE5 /* DMBoundableInputStream.m */,
 				53E271A81263F56A00B541BE /* JSON */,
@@ -157,6 +163,7 @@
 				53E271BF1263F56A00B541BE /* SBJsonParser.h in Headers */,
 				53E271C11263F56A00B541BE /* SBJsonWriter.h in Headers */,
 				531F0EF1126880830089FAE5 /* DMBoundableInputStream.h in Headers */,
+				531138781430D68400ED3153 /* DailymotionPlayerViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,7 +212,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0410;
 			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "iOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -271,6 +278,7 @@
 			files = (
 				53E270FE126369C100B541BE /* Dailymotion.m in Sources */,
 				531F0EF2126880830089FAE5 /* DMBoundableInputStream.m in Sources */,
+				531138791430D68400ED3153 /* DailymotionPlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +305,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iOS_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INSTALL_PATH = "“$(BUILT_PRODUCTS_DIR)”";
 				PRODUCT_NAME = Dailymotion;
 				SKIP_INSTALL = YES;
@@ -313,6 +322,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iOS_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INSTALL_PATH = "“$(BUILT_PRODUCTS_DIR)”";
 				PRODUCT_NAME = Dailymotion;
 				SKIP_INSTALL = YES;

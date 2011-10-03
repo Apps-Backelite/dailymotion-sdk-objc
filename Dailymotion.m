@@ -12,13 +12,11 @@
 #import "SBJsonWriter.h"
 #import <CommonCrypto/CommonDigest.h>
 
-#define kDMAPIBaseURL @"https://api.dailymotion.com"
-#define kDMAPIEndpointURL kDMAPIBaseURL "/json"
-#define kDMOAuthAuthorizeEndpointURL kDMAPIBaseURL "/oauth/authorize"
-#define kDMOAuthTokenEndpointURL kDMAPIBaseURL "/oauth/token"
 #define kDMOAuthRedirectURI @"none://fake-callback"
 
-static NSString *const kDMVersion = @"1.2";
+static NSString *WebEndpoint, *APIEndpoint, *OAuthAuthorizeEndpoint, *OAuthTokenEndpoint;
+
+static NSString *const kDMVersion = @"1.4";
 static NSString *const kDMBoundary = @"eWExXwkiXfqlge7DizyGHc8iIxThEz4c1p8YB33Pr08hjRQlEyfsoNzvOwAsgV0C";
 
 
@@ -36,6 +34,62 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
 @implementation Dailymotion
 @synthesize timeout, autoSaveSession, UIDelegate, grantType;
 @dynamic version, session;
+
++ (void)setWebEndpoint:(NSString *)url
+{
+    if (WebEndpoint != url)
+    {
+        [WebEndpoint release];
+        WebEndpoint = [url retain];
+    }
+}
++ (NSString *)WebEndpoint
+{
+    if (!WebEndpoint) self.WebEndpoint = @"http://www.dailymotion.com";
+    return WebEndpoint;
+}
+
++ (void)setAPIEndpoint:(NSString *)url
+{
+    if (APIEndpoint != url)
+    {
+        [APIEndpoint release];
+        APIEndpoint = [url retain];
+    }
+}
++ (NSString *)APIEndpoint
+{
+    if (!APIEndpoint) self.APIEndpoint = @"https://api.dailymotion.com";
+    return APIEndpoint;
+}
+
++ (void)setOAuthAuthorizeEndpoint:(NSString *)url
+{
+    if (OAuthAuthorizeEndpoint != url)
+    {
+        [OAuthAuthorizeEndpoint release];
+        OAuthAuthorizeEndpoint = [url retain];
+    }
+}
++ (NSString *)OAuthAuthorizeEndpoint
+{
+    if (!OAuthAuthorizeEndpoint) self.OAuthAuthorizeEndpoint = @"https://api.dailymotion.com/oauth/authorize";
+    return OAuthAuthorizeEndpoint;
+}
+
++ (void)setOAuthTokenEndpoint:(NSString *)url
+{
+    if (OAuthTokenEndpoint != url)
+    {
+        [OAuthTokenEndpoint release];
+        OAuthTokenEndpoint = [url retain];
+    }
+}
++ (NSString *)OAuthTokenEndpoint
+{
+    if (!OAuthTokenEndpoint) self.OAuthTokenEndpoint = @"https://api.dailymotion.com/oauth/token";
+    return OAuthTokenEndpoint;
+}
 
 #pragma mark Dailymotion (private)
 
@@ -196,7 +250,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
             [payload setObject:[grantInfo valueForKey:@"secret"] forKey:@"client_secret"];
             [payload setObject:[grantInfo valueForKey:@"scope"] forKey:@"scope"];
             [payload setObject:refreshToken forKey:@"refresh_token"];
-            apiConnection = [[self performRequestWithURL:[NSURL URLWithString:kDMOAuthTokenEndpointURL] payload:payload headers:nil] retain];
+            apiConnection = [[self performRequestWithURL:[NSURL URLWithString:Dailymotion.OAuthTokenEndpoint] payload:payload headers:nil] retain];
             return;
         }
     }
@@ -206,7 +260,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
         // Perform authorization server request
         apiConnectionState = DailymotionConnectionStateOAuthRequest;
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?response_type=code&client_id=%@&scope=%@&redirect_uri=%@",
-                                           kDMOAuthAuthorizeEndpointURL, [grantInfo valueForKey:@"key"],
+                                           Dailymotion.OAuthAuthorizeEndpoint, [grantInfo valueForKey:@"key"],
                                            [[grantInfo valueForKey:@"scope"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                            [[NSString stringWithString:kDMOAuthRedirectURI] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -239,7 +293,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
         [payload setObject:[grantInfo valueForKey:@"key"] forKey:@"client_id"];
         [payload setObject:[grantInfo valueForKey:@"secret"] forKey:@"client_secret"];
         [payload setObject:[grantInfo valueForKey:@"scope"] forKey:@"scope"];
-        apiConnection = [[self performRequestWithURL:[NSURL URLWithString:kDMOAuthTokenEndpointURL] payload:payload headers:nil] retain];
+        apiConnection = [[self performRequestWithURL:[NSURL URLWithString:Dailymotion.OAuthTokenEndpoint] payload:payload headers:nil] retain];
     }
 }
 
@@ -273,7 +327,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
             NSDictionary *callInfo = [callQueue objectForKey:callId];
             NSDictionary *call = [NSMutableDictionary dictionary];
             [call setValue:[callInfo valueForKey:@"id"] forKey:@"id"];
-            [call setValue:[callInfo valueForKey:@"method"] forKey:@"call"];
+            [call setValue:[callInfo valueForKey:@"path"] forKey:@"call"];
             if ([callInfo valueForKey:@"args"])
             {
                 [call setValue:[callInfo valueForKey:@"args"] forKey:@"args"];
@@ -289,7 +343,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
         
         apiConnectionState = DailymotionConnectionStateAPIRequest;
         SBJsonWriter *jsonWriter = [[[SBJsonWriter alloc] init] autorelease];
-        apiConnection = [[self performRequestWithURL:[NSURL URLWithString:kDMAPIEndpointURL]
+        apiConnection = [[self performRequestWithURL:[NSURL URLWithString:Dailymotion.APIEndpoint]
                                              payload:[jsonWriter stringWithObject:callsRequest]
                                              headers:headers] retain];
         
@@ -582,7 +636,7 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
         [payload setObject:[grantInfo valueForKey:@"secret"] forKey:@"client_secret"];
         [payload setObject:[result valueForKey:@"code"] forKey:@"code"];
         [payload setObject:kDMOAuthRedirectURI forKey:@"redirect_uri"];
-        apiConnection = [[self performRequestWithURL:[NSURL URLWithString:kDMOAuthTokenEndpointURL] payload:payload headers:nil] retain];
+        apiConnection = [[self performRequestWithURL:[NSURL URLWithString:Dailymotion.OAuthTokenEndpoint] payload:payload headers:nil] retain];
     }
     else
     {
@@ -699,26 +753,33 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
     [payload setObject:[grantInfo valueForKey:@"scope"] forKey:@"scope"];
     [payload setObject:username forKey:@"username"];
     [payload setObject:password forKey:@"password"];
-    apiConnection = [[self performRequestWithURL:[NSURL URLWithString:kDMOAuthTokenEndpointURL] payload:payload headers:nil] retain];
+    apiConnection = [[self performRequestWithURL:[NSURL URLWithString:Dailymotion.OAuthTokenEndpoint] payload:payload headers:nil] retain];
 }
 
 - (void)logout
 {
-    [self callMethod:@"auth.logout" withArguments:nil delegate:self];
+    [self request:@"auth.logout" delegate:self];
 }
 
-- (void)callMethod:(NSString *)methodName withArguments:(NSDictionary *)arguments delegate:(id<DailymotionDelegate>)delegate
+- (void)request:(NSString *)path delegate:(id<DailymotionDelegate>)delegate
 {
-    [self callMethod:methodName withArguments:arguments delegate:delegate userInfo:nil];
+    [self request:path withArguments:nil delegate:delegate userInfo:nil];
 }
-
-- (void)callMethod:(NSString *)methodName withArguments:(NSDictionary *)arguments delegate:(id<DailymotionDelegate>)delegate userInfo:(NSDictionary *)userInfo
+- (void)request:(NSString *)path delegate:(id<DailymotionDelegate>)delegate userInfo:(NSDictionary *)userInfo
+{
+    [self request:path withArguments:nil delegate:delegate userInfo:userInfo];
+}
+- (void)request:(NSString *)path withArguments:(NSDictionary *)arguments delegate:(id<DailymotionDelegate>)delegate
+{
+    [self request:path withArguments:arguments delegate:delegate userInfo:nil];
+}
+- (void)request:(NSString *)path withArguments:(NSDictionary *)arguments delegate:(id<DailymotionDelegate>)delegate userInfo:(NSDictionary *)userInfo
 {
     @synchronized(self)
     {
         NSString *callId = [NSString stringWithFormat:@"%d", callNextId++];
         NSMutableDictionary *call = [[NSMutableDictionary alloc] init];
-        [call setValue:methodName forKey:@"method"];
+        [call setValue:path forKey:@"path"];
         [call setValue:arguments forKey:@"args"];
         [call setValue:delegate forKey:@"delegate"];
         [call setValue:userInfo forKey:@"userInfo"];
@@ -737,6 +798,16 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
     }
 }
 
+- (void)callMethod:(NSString *)methodName withArguments:(NSDictionary *)arguments delegate:(id<DailymotionDelegate>)delegate
+{
+    [self request:methodName withArguments:arguments delegate:delegate userInfo:nil];
+}
+
+- (void)callMethod:(NSString *)methodName withArguments:(NSDictionary *)arguments delegate:(id<DailymotionDelegate>)delegate userInfo:(NSDictionary *)userInfo
+{
+    [self request:methodName withArguments:arguments delegate:delegate userInfo:userInfo];
+}
+
 - (void)uploadFile:(NSString *)filePath delegate:(id<DailymotionDelegate>)delegate
 {
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
@@ -752,8 +823,20 @@ NSString * const DailymotionApiErrorDomain = @"DailymotionApiErrorDomain";
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     [userInfo setValue:filePath forKey:@"file_path"];
     [userInfo setValue:delegate forKey:@"delegate"];
-    [self callMethod:@"file.upload" withArguments:nil delegate:self userInfo:userInfo];
+    [self request:@"file.upload" delegate:self userInfo:userInfo];
 }
+
+#if TARGET_OS_IPHONE
+- (DailymotionPlayerViewController *)player:(NSString *)video params:(NSDictionary *)params
+{
+    return [[[DailymotionPlayerViewController alloc] initWithVideo:video params:params] autorelease];
+}
+
+- (DailymotionPlayerViewController *)player:(NSString *)video
+{
+    return [[[DailymotionPlayerViewController alloc] initWithVideo:video] autorelease];
+}
+#endif
 
 - (void)clearSession
 {
