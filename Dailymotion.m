@@ -12,9 +12,10 @@
 #import "SBJsonWriter.h"
 #import <CommonCrypto/CommonDigest.h>
 
-#define kDMAPIEndpointURL @"https://api.dailymotion.com/json"
-#define kDMOAuthAuthorizeEndpointURL @"https://api.dailymotion.com/oauth/authorize"
-#define kDMOAuthTokenEndpointURL @"https://api.dailymotion.com/oauth/token"
+#define kDMAPIBaseURL @"https://api.dailymotion.com"
+#define kDMAPIEndpointURL kDMAPIBaseURL "/json"
+#define kDMOAuthAuthorizeEndpointURL kDMAPIBaseURL "/oauth/authorize"
+#define kDMOAuthTokenEndpointURL kDMAPIBaseURL "/oauth/token"
 #define kDMOAuthRedirectURI @"none://fake-callback"
 
 static NSString *const kDMVersion = @"1.2";
